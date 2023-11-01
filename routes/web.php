@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TypingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/typing', [TypingController::class, 'index'])->name('index')->middleware('auth');
+Route::get('/typing/practice', [TypingController::class, 'practice'])->name('practice')->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
