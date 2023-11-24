@@ -18,7 +18,7 @@
     <body class="antialiased">
     <x-app-layout>
         <x-slot name="header">
-            <h1>練習モード</h1>
+            <h1>テストモード</h1>
             <h2>{{ Auth::user()->name }} さんこんにちは</h2>
         </x-slot>
         
@@ -37,7 +37,8 @@
         <div id="message" class="text-container hidden">
             <div class="message">
                 ゲームクリア！お疲れさまでした！<br>
-                <button id="replayBtn" class="button">もう一度プレイする</button>
+                <div id="result">結果発表</div>
+                <button id="replayBtn" class="button">もう一度プレイする</button><br>
                 <a href="/typing/tests">テストする</a>
             </div>
         </div>
@@ -46,13 +47,10 @@
             'use strict';
         
             const words = @json($words);
-            console.log(words);
+            const arr_meanings = @json($meanings);
             const questions = words.map((word)=>word.english_word);
-            const meanings = words.map((word)=>word.meaning);
+            const meanings = arr_meanings.map((arr_meaning)=>arr_meaning.meaning);
 
-            console.log(questions);
-            console.log(meanings);
-            
             /*
             const questions = [
                 'apple',
@@ -70,24 +68,28 @@
             const game = document.getElementById('game');
             const message = document.getElementById('message');
             const replayBtn = document.getElementById('replayBtn');
+            const result_message = document.getElementById('result');
             
             let remainedTextWords = remained.textContent.split('');
             let enteredTextWords = [];
             let currentKey;
             let currentText;
             let currentMeaning;
+            let result = {};
+            let score = 0;
             
             const setQuestion = () => {
                 currentKey = Math.floor( Math.random() * questions.length );
                 currentText = questions[ currentKey ];
                 currentMeaning = meanings[ currentKey ];
+                console.log(currentText);
+                result[currentText] = true;
+                console.log(result);
                 
                 
                 questions.splice(currentKey, 1);
                 meanings.splice(currentKey, 1);
-                console.log(questions);
-                console.log(meanings);
-                
+
                 meaning.textContent = currentMeaning;
                 entered.textContent = '';
                 remained.textContent = currentText;
@@ -105,17 +107,27 @@
                     remainedTextWords.shift();
                     
                     entered.textContent = enteredTextWords.join('');
+                    console.log(enteredTextWords);
                     remained.textContent = remainedTextWords.join('');
                     
                     if(remainedTextWords.length <= 0){
                         if(questions.length <= 0){
                             game.classList.add('hidden');
                             message.classList.remove('hidden');
+                            const total = Object.keys(result).length;
+                            for (const key in result){
+                                if(result[key] == true){
+                                    score += 1;
+                                }
+                            }
+                            result_message.textContent = '結果は' + score + '/' + total;
                         }else{
                             setQuestion();
                         }
                     }
                     
+                } else{
+                    result[currentText] = false;
                 }
             });
             

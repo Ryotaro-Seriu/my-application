@@ -8,13 +8,31 @@ use App\Models\Word;
 
 class TypingController extends Controller
 {
-    public function index(User $user)
+    public function index(User $user, Word $word)
     {
-        return view('typings.index')->with(['users' => $user->get()]);
+        return view('typings.index')->with([
+            'users' => $user->get(),
+            'words' => $word->get()
+        ]);
     }
     
     public function practice(Word $word)
     {
-        return view('typings.practice')->with(['words' => $word->get()]);
+        $words = $word->get();
+        //$meanings = $word->select('meaning')->get();
+        return view('typings.practice')->with([
+            'words' => $words,
+            //'meanings' => $meanings
+        ]);
+    }
+    
+    public function test(Word $word)
+    {
+        $words = $word->select('english_word')->get();
+        $meanings = $word->select('meaning')->get();
+        return view('typings.test')->with([
+            'words' => $words,
+            'meanings' => $meanings,
+        ]);
     }
 }

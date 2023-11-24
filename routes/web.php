@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 Route::get('/typing', [TypingController::class, 'index'])->name('index')->middleware('auth');
 Route::get('/typing/practice', [TypingController::class, 'practice'])->name('practice')->middleware('auth');
+Route::get('/typing/tests', [Typingcontroller::class, "test"])->name('test')->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('useraccounts')->onDelete('cascade');
             $table->integer('total_attempt');
-            $table->integer('total_correct');
+            $table->integer('highest_score');
+            $table->integer('average_score');
         });
     }
 
